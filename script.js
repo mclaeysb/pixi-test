@@ -1,17 +1,17 @@
 // Define starting values for gcps
-let gcps_old = [
+var gcps_old = [
   [100,100],
-  [200,200],
-  [150,50],
-  [250,150],
-  [350,250]
+  [100,300],
+  [500,100],
+  [500,300],
+  [300,200]
 ]
-let gcps_new = [
+var gcps_new = [
   [100,100],
-  [200,200],
-  [150,50],
-  [250,150],
-  [350,250]
+  [100,300],
+  [500,100],
+  [500,300],
+  [300,200]
 ]
 
 // Create pixi-js application
@@ -30,14 +30,14 @@ mContainer.x = 15;
 mContainer.y = 15;
 
 // Create mesh
-const pointsX = 10;
-const pointsY = 10;
-const pointsRef = [];
+const pointsX = 20;
+const pointsY = 20;
+// const pointsRef = [];
 let mesh;
 
 texture.on('update', function() {
   console.log('texture loaded');
-  if ( mesh ) { stage.removeChild(mesh); }
+  if ( mesh ) { stage.removeChild(mesh)} // TODO: remove?
   mesh = new PIXI.mesh.Plane(this, pointsX, pointsY);
   mesh.width = this.width;
   mesh.height = this.height;
@@ -53,7 +53,7 @@ texture.on('update', function() {
     p.interactive = true;
     p.vi = [i, i+1];
     addInteractionGcps(p, gcps_old);
-    pointsRef.push(p);
+    // pointsRef.push(p);
     mContainer.addChild(p);
   }
 
@@ -67,7 +67,7 @@ texture.on('update', function() {
     p.interactive = true;
     p.vi = [i, i+1];
     addInteractionGcps(p, gcps_new);
-    pointsRef.push(p);
+    // pointsRef.push(p);
     mContainer.addChild(p);
   }
 
@@ -77,10 +77,10 @@ texture.on('update', function() {
     p.beginFill(0xff0000);
     p.drawCircle(mesh.vertices[i], mesh.vertices[i+1], 5);
     p.endFill();
-    p.interactive = true;
+    // p.interactive = true;
     p.vi = [i, i+1];
-    addInteractionMps(p);
-    pointsRef.push(p);
+    // addInteractionMps(p);
+    // pointsRef.push(p);
     mContainer.addChild(p);
   }
 });
@@ -119,7 +119,7 @@ function addInteractionGcps(point, gcps) {
           e.data.global.y - point.parent.y
         ]
         // To know which point you clicked
-       console.log("moving pointp", point.vi[0]/2)
+       console.log("moving point", point.vi[0]/2)
      }
   })
 }
