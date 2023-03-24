@@ -21,7 +21,6 @@ document.body.appendChild(app.view);
 // Create texture
 const imgUrl = "old_map_small.png";
 let texture = new PIXI.Texture.fromImage(imgUrl);
-// let sprite = new PIXI.Sprite.fromImage(imgUrl);
 if ( !texture.requiresUpdate ) { texture.update(); }
 
 // Create container
@@ -32,7 +31,6 @@ mContainer.y = 15;
 // Create mesh
 const pointsX = 20;
 const pointsY = 20;
-// const pointsRef = [];
 let mesh;
 
 texture.on('update', function() {
@@ -47,13 +45,12 @@ texture.on('update', function() {
   // gcps_old
   for(var i = 0; i < gcps_old.flat().length; i+=2) {
     let p = new PIXI.Graphics();
-    p.beginFill(0x00ff00);
+    p.beginFill(0xff0000);
     p.drawCircle(gcps_old.flat()[i], gcps_old.flat()[i+1], 10);
     p.endFill();
     p.interactive = true;
     p.vi = [i, i+1];
     addInteractionGcps(p, gcps_old);
-    // pointsRef.push(p);
     mContainer.addChild(p);
   }
 
@@ -61,26 +58,12 @@ texture.on('update', function() {
   for(var i = 0; i < gcps_new.flat().length; i+=2) {
     let p = new PIXI.Graphics();
     p.beginFill(0x0000ff);
-    p.drawCircle(gcps_new.flat()[i], gcps_new.flat()[i+1], 10);
+    p.drawCircle(gcps_new.flat()[i], gcps_new.flat()[i+1], 8);
     p.endFill();
     p.interactive = true;
     p.interactive = true;
     p.vi = [i, i+1];
     addInteractionGcps(p, gcps_new);
-    // pointsRef.push(p);
-    mContainer.addChild(p);
-  }
-
-  // mps
-  for(var i = 0; i < mesh.vertices.length; i+=2) {
-    let p = new PIXI.Graphics();
-    p.beginFill(0xff0000);
-    p.drawCircle(mesh.vertices[i], mesh.vertices[i+1], 5);
-    p.endFill();
-    // p.interactive = true;
-    p.vi = [i, i+1];
-    // addInteractionMps(p);
-    // pointsRef.push(p);
     mContainer.addChild(p);
   }
 });
@@ -110,8 +93,6 @@ function addInteractionGcps(point, gcps) {
         // e.data.global.x is the points current position
         // point.sx is the points original position (+ where you click)
         // point.parent.x takes care of mContainer dimensions 
-        // console.log(e.data.global.x, point.sx, point.parent.x)
-        // console.log(e.data.global.y, point.sy, point.parent.y)
         point.x = e.data.global.x - point.sx - point.parent.x;
         point.y = e.data.global.y - point.sy - point.parent.y;
         gcps[point.vi[0]/2] = [
@@ -120,49 +101,6 @@ function addInteractionGcps(point, gcps) {
         ]
         // To know which point you clicked
        console.log("moving point", point.vi[0]/2)
-     }
-  })
-}
-
-function addInteractionMps(point) {
-  
-  point.on("pointerdown", function(e) {
-    point.dragging = true;
-    point.data = e.data;
-    point.sx = point.data.getLocalPosition(point).x;
-    point.sy = point.data.getLocalPosition(point).y;
-  })
-  
-  point.on("pointerup", function(e) {
-    point.dragging = false;
-    point.data = null;
-  });
-
-  point.on("pointerupoutside", function(e) {
-    point.dragging = false;
-    point.data = null;
-  })
-
-  point.on("pointermove", function(e) {
-    var newPosition = {};
-     if(point.dragging) {
-      // e.data.global.x is the points current position
-      // point.sx is the points original position (+ where you click)
-      // point.parent.x takes care of mContainer dimensions 
-       // console.log(e.data.global.x, point.sx, point.parent.x)
-       // console.log(e.data.global.y, point.sy, point.parent.y)
-       point.x = e.data.global.x - point.sx - point.parent.x;
-       point.y = e.data.global.y - point.sy - point.parent.y;
-       mesh.vertices[point.vi[0]] = e.data.global.x - point.parent.x ;
-       mesh.vertices[point.vi[1]] = e.data.global.y - point.parent.y ;
-       // also, move mesh.vertices[pvi - 3 points]
-       
-       // To know which point you clicked
-       let rows = pointsX;
-       let cols = pointsY;
-       let pInRow = (point.vi[0] / 2) % rows;
-       let pInCol = Math.floor((point.vi[0] / 2) / (cols));
-       console.log("moving mps", pInCol, pInRow)
      }
   })
 }
