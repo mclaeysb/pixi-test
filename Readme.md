@@ -10,6 +10,9 @@ Drag the five blue and red dots.
 
 Click the `Georeference` button. The image will be reprojected such that what's under a red dot will end up under it's corresponding blue dot.
 
+![Move some points](./before.png)
+![Et voila!](./after.png)
+
 ## Code used
 
 This test project uses the [Pixi](https://pixijs.download/) library which is a WebGL framework: it gives you access to the power of the WebGL but without having to set up complex things like 'shaders'.
@@ -24,3 +27,6 @@ This has stayed a test, but futher improvements could include:
 
 - Manually adding GCPs, e.g. by clicking on the screen.
 - Live reprojecting adding points (or dragging points, if fast enough) // This was not working because on every successive reprojections were building on each other instead of starting from the start.
+- Clean up JS code (use `Array.map()` and `Array.flat()`)
+- Customise Pixi to have smaller download size
+- Use latest version of Pixi (probably will need to replace `Mesh.plane` by `SimplePlane`, and maybe make other changes)
